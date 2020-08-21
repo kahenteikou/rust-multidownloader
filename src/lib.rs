@@ -1,5 +1,7 @@
+
 #[cfg(test)]
 mod rust_multidownloader {
+    use curl::easy::Easy;
     #[test]
     fn it_works() {
         assert_eq!(2 + 2, 4);
@@ -9,6 +11,10 @@ mod rust_multidownloader {
         "https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.19.141.tar.xz".to_string()
         ];
         download(&download_lskun);
+    }
+    fn download_child(urlkun:&String){
+        let mut easy = Easy::new();
+        easy.url(urlkun).unwrap();
     }
     pub fn download(url_list:&[String]){
         let mut listkun=url_list.clone();
