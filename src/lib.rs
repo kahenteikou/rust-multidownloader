@@ -25,7 +25,7 @@ mod rust_multidownloader {
         "https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.59.tar.xz".to_string(),
         "https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.19.141.tar.xz".to_string()
         ];
-        download(&download_lskun,8);
+        download(&download_lskun);
     }
     fn download_child(urlkun:&String,barrier:&Arc<Barrier>){
         let url_re = Regex::new(r".+/(.+?)([\?#;].*)?$").unwrap();
@@ -55,9 +55,9 @@ mod rust_multidownloader {
         barrier.wait();
         transfer.perform().unwrap();
     }
-    pub fn download(url_list:&[String],max_threads:usize){
+    pub fn download(url_list:&[String]){
         let mut listkun=url_list.clone();
-        let pool = ThreadPool::new(max_threads);
+        let pool = ThreadPool::new(url_list.len() + 2);
         let barrier = Arc::new(Barrier::new(url_list.len() + 1));
         let barrier2 = Arc::new(Barrier::new(url_list.len() + 1));
         for(dl_url) in listkun{
